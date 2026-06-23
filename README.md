@@ -1,10 +1,10 @@
-# 📊 Applied Statistics --- Assignment 9
+#  Applied Statistics --- Assignment 9
 
 ### Chess Dataset & WHO Dataset Analysis (Full Report with Code, Outputs & Interpretation)
 
 ------------------------------------------------------------------------
 
-# 👩‍💻 1. Project Overview
+#  1. Project Overview
 
 This project applies statistical analysis techniques on two datasets: -
 Chess games dataset - WHO life expectancy dataset
@@ -15,11 +15,11 @@ intervals (parametric + bootstrap)
 
 ------------------------------------------------------------------------
 
-# 📌 AQ1 --- Descriptive Statistics
+#  AQ1 --- Descriptive Statistics
 
-## 🎮 1.1 Rating Difference (rating_diff)
+##  1.1 Rating Difference (rating_diff)
 
-### 🔢 Code
+###  Code
 
 ``` python
 chess['rating_diff'].describe()
@@ -27,7 +27,7 @@ chess['rating_diff'].skew()
 chess['rating_diff'].quantile(0.75) - chess['rating_diff'].quantile(0.25)
 ```
 
-### 📊 Output
+###  Output
 
     count    20058.000000
     mean       173.091435
@@ -40,7 +40,7 @@ chess['rating_diff'].quantile(0.75) - chess['rating_diff'].quantile(0.25)
     Skew = 1.9487
     IQR = 196
 
-### 🧠 Interpretation
+###  Interpretation
 
 -   Strong right skew (1.95)
 -   Mean \>\> median → presence of extreme mismatches
@@ -48,9 +48,9 @@ chess['rating_diff'].quantile(0.75) - chess['rating_diff'].quantile(0.25)
 
 ------------------------------------------------------------------------
 
-## ♟️ 1.2 Turns
+##  1.2 Turns
 
-### 🔢 Code
+###  Code
 
 ``` python
 chess['turns'].describe()
@@ -58,7 +58,7 @@ chess['turns'].skew()
 chess['turns'].quantile(0.75) - chess['turns'].quantile(0.25)
 ```
 
-### 📊 Output
+###  Output
 
     mean = 60.46
     median = 55
@@ -68,7 +68,7 @@ chess['turns'].quantile(0.75) - chess['turns'].quantile(0.25)
     Skew = 0.897
     IQR = 42
 
-### 🧠 Interpretation
+###  Interpretation
 
 -   Moderately right-skewed
 -   Most games are short (typical \~55 moves)
@@ -76,23 +76,23 @@ chess['turns'].quantile(0.75) - chess['turns'].quantile(0.25)
 
 ------------------------------------------------------------------------
 
-# 📌 AQ2 --- Distribution Analysis
+#  AQ2 --- Distribution Analysis
 
-## 🔬 2.1 Normality Test (Shapiro-Wilk)
+##  2.1 Normality Test (Shapiro-Wilk)
 
-### 🔢 Code
+###  Code
 
 ``` python
 stats.shapiro(chess['turns'].sample(1000))
 stats.shapiro(chess['rating_diff'].sample(1000))
 ```
 
-### 📊 Output
+###  Output
 
     Shapiro-Wilk p = 0.000000
     Shapiro-Wilk p = 0.000000
 
-### 🧠 Interpretation
+###  Interpretation
 
 -   p \< 0.05 → reject normality
 -   Data is NOT normally distributed
@@ -100,16 +100,16 @@ stats.shapiro(chess['rating_diff'].sample(1000))
 
 ------------------------------------------------------------------------
 
-## 🔄 2.2 Log Transformation
+##  2.2 Log Transformation
 
-### 🔢 Code
+###  Code
 
 ``` python
 np.log1p(chess['turns'])
 np.log1p(chess['rating_diff'])
 ```
 
-### 📊 Output
+###  Output
 
     Turns skew (original): 0.897
     Turns skew (log): -1.37
@@ -117,7 +117,7 @@ np.log1p(chess['rating_diff'])
     Rating_diff skew (original): 1.95
     Rating_diff skew (log): -0.90
 
-### 🧠 Interpretation
+###  Interpretation
 
 -   Log reduces skew significantly
 -   Converts multiplicative patterns into additive ones
@@ -125,9 +125,9 @@ np.log1p(chess['rating_diff'])
 
 ------------------------------------------------------------------------
 
-# 📌 AQ3 --- WHO Correlation Matrix
+#  AQ3 --- WHO Correlation Matrix
 
-## 🔢 Code
+##  Code
 
 ``` python
 who_num = who.select_dtypes(include='number')
@@ -137,16 +137,16 @@ corr['Life expectancy']
 
 ------------------------------------------------------------------------
 
-## 📊 Output
+##  Output
 
-### 📈 Positive correlations
+###  Positive correlations
 
     Schooling                          0.751975
     Income composition of resources    0.724776
     BMI                                0.567694
     Diphtheria                         0.479495
 
-### 📉 Negative correlations
+###  Negative correlations
 
     Adult Mortality        -0.696359
     HIV/AIDS              -0.556556
@@ -156,21 +156,21 @@ corr['Life expectancy']
 
 ------------------------------------------------------------------------
 
-## 🧠 Interpretation
+##  Interpretation
 
 -   Education strongly improves life expectancy
 -   Disease-related variables reduce life expectancy
 -   Correlation does NOT imply causation
 
-### ⚠️ Confounder
+###  Confounder
 
 GDP likely influences both education and life expectancy
 
 ------------------------------------------------------------------------
 
-# 📌 AQ4 --- Chi-Squared Test
+#  AQ4 --- Chi-Squared Test
 
-## 🔢 Code
+##  Code
 
 ``` python
 table = pd.crosstab(chess['rating_group'], chess['white_win'])
@@ -179,7 +179,7 @@ stats.chi2_contingency(table)
 
 ------------------------------------------------------------------------
 
-## 📊 Output
+##  Output
 
     Chi-square = 3.672
     p-value = 0.159465
@@ -187,7 +187,7 @@ stats.chi2_contingency(table)
 
 ------------------------------------------------------------------------
 
-## 🧠 Interpretation
+##  Interpretation
 
 -   p \> 0.05 → fail to reject H0
 -   No statistically significant relationship
@@ -199,37 +199,37 @@ Rating group does NOT influence win rate meaningfully.
 
 ------------------------------------------------------------------------
 
-# 📌 AQ5 --- Confidence Intervals
+#  AQ5 --- Confidence Intervals
 
-## 🔢 Code (Parametric)
+##  Code (Parametric)
 
 ``` python
 confidence_interval(rated_turns)
 confidence_interval(unrated_turns)
 ```
 
-## 📊 Output (Parametric)
+##  Output (Parametric)
 
     Rated:   (61.44, 62.48)
     Unrated: (53.26, 55.28)
 
 ------------------------------------------------------------------------
 
-## 🔢 Code (Bootstrap)
+##  Code (Bootstrap)
 
 ``` python
 bootstrap_ci(rated_turns)
 bootstrap_ci(unrated_turns)
 ```
 
-## 📊 Output (Bootstrap)
+##  Output (Bootstrap)
 
     Rated:   (61.43, 62.50)
     Unrated: (53.20, 55.30)
 
 ------------------------------------------------------------------------
 
-## 🧠 Interpretation
+##  Interpretation
 
 -   Rated games are longer than unrated games
 -   No overlap between confidence intervals
@@ -237,7 +237,7 @@ bootstrap_ci(unrated_turns)
 
 ------------------------------------------------------------------------
 
-# 📚 Final Insights
+#  Final Insights
 
 -   Chess data is heavily skewed → non-normal distributions
 -   Log transformation improves distribution shape
@@ -247,7 +247,7 @@ bootstrap_ci(unrated_turns)
 
 ------------------------------------------------------------------------
 
-# 🎯 Final Conclusion
+#  Final Conclusion
 
 This analysis demonstrates how statistical methods help: - Describe data
 behavior - Test hypotheses - Measure uncertainty - Validate conclusions
